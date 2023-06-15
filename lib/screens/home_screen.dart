@@ -53,6 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onRestart() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+      totalSeconds = twentyFiveMinutes;
+    });
+  }
+
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
     return duration.toString().split(".").first.substring(2, 7);
@@ -66,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           //Flexible 높이 200, 깊이 300이아니라 UI를 비율에 기반해서 더 유연하게 만들 수 있게 해준다.
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
@@ -80,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 2,
             child: Center(
               child: IconButton(
                 iconSize: 120,
@@ -89,6 +97,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(isRunning
                     ? Icons.pause_circle_outline
                     : Icons.play_circle_outline),
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 1,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                    onPressed: onRestart,
+                    icon: Icon(
+                      Icons.restart_alt_outlined,
+                      color: Theme.of(context).textTheme.displayLarge!.color,
+                    ),
+                    label: Text(
+                      "Restart",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.displayLarge!.color,
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
