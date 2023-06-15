@@ -10,16 +10,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  static const twentyFiveMinutes = 1500;
   bool isRunning = false;
-  int totalSeconds = 1500;
+  int totalPomodoros = 0;
+  int totalSeconds = twentyFiveMinutes;
   // late = 이 property를 당장 초기화 하지 않아도 된다
   // 하지만 사용하기 전에 반드시 초기화 한다고 약속!!!
   late Timer timer;
 
+//onStartPressed안의 timer에 의해 1초마다 실행되는 함수
   void onTick(Timer timer) {
-    setState(() {
-      totalSeconds = totalSeconds - 1;
-    });
+    if (totalSeconds == 0) {
+      setState(() {
+        totalPomodoros = totalPomodoros + 1;
+        isRunning = false;
+        totalSeconds = twentyFiveMinutes;
+      });
+      timer.cancel();
+    } else {
+      setState(() {
+        totalSeconds = totalSeconds - 1;
+      });
+    }
   }
 
   // Timer 함수에 Duration 함수를 통해 반복할 함수를 설정 할 수 있다.
@@ -101,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          '0',
+                          '$totalPomodoros',
                           style: TextStyle(
                             fontSize: 58,
                             fontWeight: FontWeight.w600,
