@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -8,6 +10,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int totalSeconds = 1500;
+  // late = 이 property를 당장 초기화 하지 않아도 된다
+  // 하지만 사용하기 전에 반드시 초기화 한다고 약속!!!
+  late Timer timer;
+
+  void onTick(Timer timer) {
+    setState(() {
+      totalSeconds = totalSeconds - 1;
+    });
+  }
+
+  // Timer 함수에 Duration 함수를 통해 반복할 함수를 설정 할 수 있다.
+  void onStartPressed() {
+    // onTick() <- 괄호를 쓰지 않는다는 걸 조심 ()는 함수를 지금 실행하는걸 의미한다.
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      onTick,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                "25:00",
+                "$totalSeconds",
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 89,
@@ -35,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IconButton(
                 iconSize: 120,
                 color: Theme.of(context).cardColor,
-                onPressed: () {},
+                onPressed: onStartPressed,
                 icon: const Icon(Icons.play_circle_outline),
               ),
             ),
@@ -46,8 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                   child: Container(
-                    decoration:
-                        BoxDecoration(color: Theme.of(context).cardColor),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      ),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
