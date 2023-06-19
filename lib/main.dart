@@ -4,6 +4,7 @@ import 'package:toonflix/screens/home_screen.dart';
 void main() {
   runApp(const App());
 }
+//포모도로 완결.
 
 class App extends StatefulWidget {
   const App({super.key});
