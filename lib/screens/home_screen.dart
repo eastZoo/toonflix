@@ -31,11 +31,18 @@ class HomeScreen extends StatelessWidget {
         //snapshot을 통해 상태를 알 수 있다.( error, data, state,,,)
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            //샘플 ListView를 사용했지만 사실 한번에 모든 것을 로딩하는 ListView는 그렇게 좋지 않다.
-            return ListView(
-              children: [
-                for (var webtoon in snapshot.data!) Text(webtoon.title)
-              ],
+            //ListView.builder 는 모든 아이템을 한 번에 만드는 대신 만들려는 아이템에 itemBuilder 함수를 실행
+            // 그러면 여기서 build 되는 아이템의 인덱스에 접근할 수 있는 것.
+            // 사용자가 보고있을때 만 만들어짐.
+
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                print(index);
+                var webtoon = snapshot.data![index];
+                return Text(webtoon.title);
+              },
             );
           }
           return const Center(
