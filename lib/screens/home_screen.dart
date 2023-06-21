@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             // 그러면 여기서 build 되는 아이템의 인덱스에 접근할 수 있는 것.
             // 사용자가 보고있을때 만 만들어짐.
 
-            return ListView.builder(
+            return ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -43,6 +43,9 @@ class HomeScreen extends StatelessWidget {
                 var webtoon = snapshot.data![index];
                 return Text(webtoon.title);
               },
+              separatorBuilder: ((context, index) => const SizedBox(
+                    width: 20,
+                  )),
             );
           }
           return const Center(
