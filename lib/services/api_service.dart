@@ -4,10 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:toonflix/models/webtoon_model.dart';
 
 class ApiService {
-  final String baseUrl = "https://webtoon-crawler.nomadcoders.workers.dev";
-  final String today = "today";
+  static const String baseUrl =
+      "https://webtoon-crawler.nomadcoders.workers.dev";
+  static const String today = "today";
 
-  void getTodaysToons() async {
+  static Future<List<WebtoonModel>> getTodaysToons() async {
+    List<WebtoonModel> webtoonInstances = [];
     final url = Uri.parse('$baseUrl/$today');
     // API 요청이 처리돼서 응답을 반환할 때까지 기다려야한다.
     // 이런걸 async 프로그래밍이라고 한다.
@@ -21,12 +23,9 @@ class ApiService {
 
       final List<dynamic> webtoons = jsonDecode(response.body);
       for (var webtoon in webtoons) {
-        final toon = WebtoonModel.fromJson(webtoon);
-
-        // 그럼 이제 toon.id 와같이 dart에서 사용할 수 있는 클래스로 변환되었다.
-        print(toon.title);
+        webtoonInstances.add(WebtoonModel.fromJson(webtoon));
       }
-      return;
+      return webtoonInstances;
     }
     throw Error();
   }
