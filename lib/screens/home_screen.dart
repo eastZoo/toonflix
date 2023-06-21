@@ -5,11 +5,10 @@ import 'package:toonflix/services/api_service.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
-    print(webtoons);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -32,9 +31,16 @@ class HomeScreen extends StatelessWidget {
         //snapshot을 통해 상태를 알 수 있다.( error, data, state,,,)
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const Text("There is data!");
+            //샘플 ListView를 사용했지만 사실 한번에 모든 것을 로딩하는 ListView는 그렇게 좋지 않다.
+            return ListView(
+              children: [
+                for (var webtoon in snapshot.data!) Text(webtoon.title)
+              ],
+            );
           }
-          return const Text('Loading...');
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );
